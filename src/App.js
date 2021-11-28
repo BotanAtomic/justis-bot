@@ -58,7 +58,7 @@ var questions = [
         <i>Pour qu'elle soit enregistrée comme une plainte, vous devrez signer cette déclaration dans une unité de gendarmerie ou un service de police que vous allez choisir.</i>
     </span>,  "Vous avez pris connaissance des conditions d'utilisation de ce service, voulez-vous continuer ?"]),
 
-    "Je vais vous aider dans votre démarche. Dans quelle ville souhaitez vous déposer votre plainte? Servez-vous des commandes ci-dessous pour interagir...",
+    "Je vais vous aider dans votre démarche. Dans quelle ville souhaitez vous déposer votre plainte?",
     "Déposez-vous votre plainte en tant que victime, représentant légal d'une personne morale ou bien représentant légal d'une personne physique?",
     "Pouvez-vous me donner vos noms et prénoms ?",
     "Quels sont les faits dont vous avez été victime ? Une atteinte aux biens ou bien des faits discriminatoires?",
