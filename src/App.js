@@ -105,7 +105,7 @@ function App() {
                 </span>
 
 
-                <div className={"w-full flex flex-col items-center justify-center space-y-4"}>
+                <div className={"w-full flex flex-col items-center justify-center space-y-4 pb-4"}>
                     {Array(step).fill(0).map((a, i) => (
                         <>
                         {(typeof(questions[i]) !== "string" ? questions[i] : [questions[i]]).map(q =>  <PoliceBubble value={q}/>)}
