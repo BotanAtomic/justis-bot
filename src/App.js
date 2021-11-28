@@ -82,7 +82,7 @@ function App() {
             </div>
 
             <div className={"flex flex-col items-center justify-center w-full"}>
-                <img src={"logo.png"} />
+                <img src={"logo.png"}  alt={"ok"}/>
                 <span className={"text-2xl text-gray-700 font-bold"}>J.U.S.T.I.S</span>
 
                 <span className={"text-2xl text-gray-600 font-bold pt-4"}>Assistance Plainte</span>
