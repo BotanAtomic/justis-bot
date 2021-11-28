@@ -3,11 +3,13 @@ import {useEffect, useState} from "react";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {GrUser, GrUserPolice} from "react-icons/gr";
 import {languages} from "./languages";
+import TextareaAutosize from 'react-textarea-autosize';
+
 const PoliceBubble = ({value}) => {
     return (
-        <div className={"relative w-2/3 flex items-center justify-center space-x-4"}>
-            <GrUserPolice size={24}/>
-            <span className={"w-full pl-12 h-auto flex items-center pr-8 outline-none rounded-3xl border-2 content-none overflow-hidden"}>
+        <div className={"relative w-full px-4 lg:w-2/3 flex items-center justify-center space-x-4"}>
+            <GrUserPolice size={22}/>
+            <span className={"w-full pl-12 h-auto flex items-center pr-8 py-2 outline-none rounded-3xl border-2 content-none overflow-hidden"}>
                 {value}
             </span>
         </div>
@@ -24,21 +26,21 @@ const UserBubble = ({defaultValue = "",callback, isLast, listening, start, stop,
     }, [isLast, transcript])
 
     return (
-        <div className={"relative w-2/3 flex items-center justify-center space-x-4"}>
+        <div className={"relative px-4 w-full lg:w-2/3 flex items-center justify-center space-x-4"}>
             {defaultValue &&
             <span className={"w-full pl-12 h-auto flex items-center pr-8 outline-none rounded-3xl border-2 content-none overflow-hidden"}>
                 {defaultValue}
             </span>}
-            {!defaultValue && <textarea className={"w-full pl-4 pr-8 outline-none rounded-3xl border-2 content-none overflow-hidden"}
+            {!defaultValue && <TextareaAutosize cacheMeasurements={true}  className={"resize-none w-full py-2 pl-4 lg:pr-16 pr-16 outline-none rounded-3xl border-2 content-none overflow-hidden"}
                       value={value} onChange={(e) => isLast && setValue(e.target.value)}/>}
-            <GrUser size={24}/>
+            <GrUser size={22}/>
 
-            {listening && isLast && <BsFillMicFill className={"absolute right-20 top-1/2 transform -translate-y-1/2 text-green-900"}
-                                        onClick={stop} size={24}/>}
-            {!listening && isLast &&  <BsMicMuteFill className={"absolute right-20 top-1/2 transform -translate-y-1/2 text-red-900"}
-                                         onClick={start} size={24}/>}
-            {value && isLast && <BsCheckLg className={"absolute right-12 top-1/2 transform -translate-y-1/2 text-green-900"}
-                                           size={24} onClick={callback}/> }
+            {listening && isLast && <BsFillMicFill className={"absolute right-24 lg:right-22 top-1/2 transform -translate-y-1/2 text-green-900"}
+                                        onClick={stop} size={22}/>}
+            {!listening && isLast &&  <BsMicMuteFill className={"absolute right-24 lg:right-22 top-1/2 transform -translate-y-1/2 text-red-900"}
+                                         onClick={start} size={22}/>}
+            {value && isLast && <BsCheckLg className={"absolute right-16 lg:right-16 top-1/2 transform -translate-y-1/2 text-green-900"}
+                                           size={22} onClick={callback}/> }
         </div>
     )
 }
