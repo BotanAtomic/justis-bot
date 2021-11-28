@@ -46,7 +46,19 @@ const UserBubble = ({defaultValue = "",callback, isLast, listening, start, stop,
 }
 
 var questions = [
-    "Bonjour, je vais vous aider dans votre démarche. Dans quelle ville souhaitez vous déposer votre plainte? Servez-vous des commandes ci-dessous pour interagir...",
+
+    ([<span>
+        Ce service vous permet d'effectuer une déclaration pour des faits dont vous êtes directement et personnellement victime et pour lesquels vous ne connaissez pas l'auteur, concernant :
+        <br/><br/>
+        <li><b>Une atteinte aux biens (vols, dégradation, escroqueries...)</b></li>
+        <li><b>un fait discriminatoire (discrimination, diffamation, injure, provocation individuelle à la haine)</b></li>
+        <br/>
+        <span>Cette démarche vise essentiellement à vous faire gagner du temps lors de votre présentation à l'unité ou service choisi</span>
+        <br/><br/>
+        <i>Pour qu'elle soit enregistrée comme une plainte, vous devrez signer cette déclaration dans une unité de gendarmerie ou un service de police que vous allez choisir.</i>
+    </span>,  "Vous avez pris connaissance des conditions d'utilisation de ce service, voulez-vous continuer ?"]),
+
+    "Je vais vous aider dans votre démarche. Dans quelle ville souhaitez vous déposer votre plainte? Servez-vous des commandes ci-dessous pour interagir...",
     "Déposez-vous votre plainte en tant que victime, représentant légal d'une personne morale ou bien représentant légal d'une personne physique?",
     "Pouvez-vous me donner vos noms et prénoms ?",
     "Quels sont les faits dont vous avez été victime ? Une atteinte aux biens ou bien des faits discriminatoires?",
@@ -96,7 +108,8 @@ function App() {
                 <div className={"w-full flex flex-col items-center justify-center space-y-4"}>
                     {Array(step).fill(0).map((a, i) => (
                         <>
-                            <PoliceBubble value={questions[i]}/>
+                        {(typeof(questions[i]) !== "string" ? questions[i] : [questions[i]]).map(q =>  <PoliceBubble value={q}/>)}
+
                             {i < questions.length - 1 && <UserBubble
                                 callback={() => {
                                     resetTranscript()
