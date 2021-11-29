@@ -4,6 +4,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import {GrUser, GrUserPolice} from "react-icons/gr";
 import {languages} from "./languages";
 import TextareaAutosize from 'react-textarea-autosize';
+import React from 'react'
 
 const PoliceBubble = ({value}) => {
     return (
@@ -40,12 +41,12 @@ const UserBubble = ({defaultValue = "",callback, isLast, listening, start, stop,
             {!listening && isLast &&  <BsMicMuteFill className={"absolute right-24 lg:right-22 top-1/2 transform -translate-y-1/2 text-red-900"}
                                          onClick={start} size={22}/>}
             {value && isLast && <BsCheckLg className={"absolute right-16 lg:right-16 top-1/2 transform -translate-y-1/2 text-green-900"}
-                                           size={22} onClick={callback}/> }
+                                           size={22} onClick={() => callback(value)}/> }
         </div>
     )
 }
 
-var questions = [
+const questions = (lastValue) => [
 
     ([<span>
         Ce service vous permet d'effectuer une déclaration pour des faits dont vous êtes directement et personnellement victime et pour lesquels vous ne connaissez pas l'auteur, concernant :
@@ -61,15 +62,18 @@ var questions = [
     "Je vais vous aider dans votre démarche. Dans quelle ville souhaitez vous déposer votre plainte?",
     "Déposez-vous votre plainte en tant que victime, représentant légal d'une personne morale ou bien représentant légal d'une personne physique?",
     "Pouvez-vous me donner vos noms et prénoms ?",
-    "Quels sont les faits dont vous avez été victime ? Une atteinte aux biens ou bien des faits discriminatoires?",
+    `Très bien ${lastValue}. Quels sont les faits dont vous avez été victime ? Une atteinte aux biens ou bien des faits discriminatoires?`,
     "Pouvez-vous décrire les faits?",
     "Merci. Votre plainte a été enregistrée. Nous revenons vers vous dans les plus brefs délais."
 ];
+
+const questionLength = questions("").length;
 
 function App() {
 
     const [lang, setLang] = useState('fr-FR')
     const [step, setStep] = useState(1);
+    const [lastResponse, setLastResponse] = useState("");
 
     const {
         transcript,
@@ -84,13 +88,22 @@ function App() {
         }
     }, [isMicrophoneAvailable])
 
+    const onReceiveValue = (value) => {
+        console.log("Receive", value)
+        if(value) {
+            setLastResponse(value);
+            resetTranscript()
+            setStep((a) => Math.min(a + 1, questionLength));
+        }
+    }
+
     return (
         <div className={"flex flex-col w-full h-full overflow-y-auto relative"}>
 
             <div className={"absolute top-0 right-0"}>
                 <select name={"languages"} value={lang} onChange={(e) => setLang(e.target.value)}>
                     {languages.map((l) => (
-                        <option value={l[1][0]}>{l[0]}</option>
+                        <option key={l} value={l[1][0]}>{l[0]}</option>
                     ))}
                 </select>
             </div>
@@ -106,23 +119,27 @@ function App() {
 
 
                 <div className={"w-full flex flex-col items-center justify-center space-y-4 pb-4"}>
-                    {Array(step).fill(0).map((a, i) => (
-                        <>
-                        {(typeof(questions[i]) !== "string" ? questions[i] : [questions[i]]).map(q =>  <PoliceBubble value={q}/>)}
+                    {Array(step).fill(0).map((a, i) => {
 
-                            {i < questions.length - 1 && <UserBubble
-                                callback={() => {
-                                    resetTranscript()
-                                    setStep((a) => Math.min(a + 1, questions.length));
-                                }}
-                                start={() => SpeechRecognition.startListening({continuous: false, language: lang})}
-                                stop={SpeechRecognition.stopListening}
-                                listening={listening}
-                                isLast={i === step - 1}
-                                transcript={transcript}
-                            />}
-                        </>
-                    ))}
+                        const currentQuestions = questions(lastResponse);
+                        return (
+                            <React.Fragment key={i}>
+                                {(typeof(currentQuestions[i]) !== "string" ? currentQuestions[i] : [currentQuestions[i]]).map(q =>
+                                    <PoliceBubble value={q} key={q}/>
+                                )}
+                                {i < questionLength - 1 && <UserBubble
+                                    callback={(v) => {
+                                        onReceiveValue(v)
+                                    }}
+                                    start={() => SpeechRecognition.startListening({continuous: false, language: lang})}
+                                    stop={SpeechRecognition.stopListening}
+                                    listening={listening}
+                                    isLast={i === step - 1}
+                                    transcript={transcript}
+                                />}
+                            </React.Fragment>
+                        )
+                    })}
                 </div>
             </div>
 
