@@ -77,7 +77,7 @@ const UserBubble = ({
             "absolute right-24 lg:right-22 top-1/2 transform -translate-y-1/2 text-green-900"
           }
           onClick={stop}
-          size={22}
+          size={30}
         />
       )}
       {!listening && isLast && (
@@ -86,7 +86,7 @@ const UserBubble = ({
             "absolute right-24 lg:right-22 top-1/2 transform -translate-y-1/2 text-red-900"
           }
           onClick={start}
-          size={22}
+          size={30}
         />
       )}
       {value && isLast && (
@@ -94,7 +94,7 @@ const UserBubble = ({
           className={
             "absolute right-16 lg:right-16 top-1/2 transform -translate-y-1/2 text-green-900"
           }
-          size={22}
+          size={30}
           onClick={() => callback(value)}
         />
       )}
