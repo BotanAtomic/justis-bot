@@ -175,7 +175,7 @@ function App() {
   };
 
   useEffect(() => {
-    scrollToBottom();
+    if (step > 1) scrollToBottom();
   }, [step]);
 
   return (
@@ -244,12 +244,12 @@ function App() {
                       transcript={transcript}
                     />
                   )}
+                  {i < questionLength - 1 && <div ref={endRef} />}
                 </React.Fragment>
               );
             })}
         </div>
       </div>
-      <div ref={endRef} />
     </div>
   );
 }
